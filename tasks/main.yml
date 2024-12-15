@@ -1,0 +1,21 @@
+    - name: Execute shell command
+      ansible.builtin.shell: systemctl stop apache2
+    - name: Install apache httpd
+      ansible.builtin.apt:
+        name: apache2
+        state: absent
+        update_cache: yes
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: index.html
+        dest: /var/www/html
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Execute shell command
+      ansible.builtin.shell: cat /var/www/html/index.html
+      register: disk_usage
+
+    - name: Display output
+      ansible.builtin.debug:
+        var: disk_usage
